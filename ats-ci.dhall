@@ -13,15 +13,15 @@ let atspkgInstall =
         }
 
 let mkPkgArgs =
-        λ(pkgArgs : Optional Text)
-      → Optional/fold Text pkgArgs Text (λ(x : Text) → " --pkg-args ${x}") ""
+      λ(pkgArgs : Optional Text) →
+        merge { Some = λ(x : Text) → " --pkg-args ${x}", None = "" } pkgArgs
 
 let mkTgts = concatSep " "
 
 let atsBuildTargets =
-        λ(targets : List Text)
-      → λ(pkgArgs : Optional Text)
-      → haskellCi.BuildStep.Name
+      λ(targets : List Text) →
+      λ(pkgArgs : Optional Text) →
+        haskellCi.BuildStep.Name
           { name = "Build ATS"
           , run =
               ''
@@ -44,9 +44,9 @@ let atsCheckPkg =
 let atsBuild = atsBuildTargets ([] : List Text)
 
 let atsTestTargets =
-        λ(targets : List Text)
-      → λ(pkgArgs : Optional Text)
-      → haskellCi.BuildStep.Name
+      λ(targets : List Text) →
+      λ(pkgArgs : Optional Text) →
+        haskellCi.BuildStep.Name
           { name = "Test ATS"
           , run =
               ''
@@ -58,8 +58,8 @@ let atsTestTargets =
 let atsTest = atsTestTargets ([] : List Text)
 
 let atsSteps =
-        λ(steps : List haskellCi.BuildStep)
-      → haskellCi.ciNoMatrix steps ⫽ { name = "ATS CI" }
+      λ(steps : List haskellCi.BuildStep) →
+        haskellCi.ciNoMatrix steps ⫽ { name = "ATS CI" }
 
 let atsCi =
         atsSteps [ haskellCi.checkout, atspkgInstall, atsBuild (None Text) ]
