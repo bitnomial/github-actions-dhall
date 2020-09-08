@@ -24,8 +24,8 @@ let futharkPkgDeps =
         }
 
 let checkFuthark =
-        λ(futs : List Text)
-      → haskellCi.BuildStep.Name
+      λ(futs : List Text) →
+        haskellCi.BuildStep.Name
           { name = "Check Futhark"
           , run =
                   ''
@@ -33,8 +33,8 @@ let checkFuthark =
                   ''
               ++  concatMap
                     Text
-                    (   λ(d : Text)
-                      → ''
+                    ( λ(d : Text) →
+                        ''
                         futhark check ${d}
                         ''
                     )
@@ -42,8 +42,8 @@ let checkFuthark =
           }
 
 let futharkSteps =
-        λ(steps : List haskellCi.BuildStep)
-      →   haskellCi.ciNoMatrix
+      λ(steps : List haskellCi.BuildStep) →
+          haskellCi.ciNoMatrix
             (   [ haskellCi.checkout
                 , haskellCi.haskellEnv haskellCi.latestEnv
                 , haskellCi.cache
@@ -54,8 +54,8 @@ let futharkSteps =
         ⫽ { name = "Futhark CI" }
 
 let futharkCi =
-        λ(futs : List Text)
-      → futharkSteps [ checkFuthark futs ] : haskellCi.CI.Type
+      λ(futs : List Text) →
+        futharkSteps [ checkFuthark futs ] : haskellCi.CI.Type
 
 in  { CI = haskellCi.CI.Type
     , futharkSteps

@@ -13,8 +13,8 @@ let installYamllint =
         }
 
 let checkYaml =
-        λ(yamlFiles : List Text)
-      → let yamlArgs = concatSep " " yamlFiles
+      λ(yamlFiles : List Text) →
+        let yamlArgs = concatSep " " yamlFiles
 
         in  pyCi.BuildStep.Name
               { name = "Check YAML"
@@ -26,8 +26,8 @@ let checkYaml =
               }
 
 let yamlCi =
-        λ(yamlFiles : List Text)
-      →     pyCi.ciNoMatrix
+      λ(yamlFiles : List Text) →
+            pyCi.ciNoMatrix
               [ pyCi.checkout
               , pyCi.wheelInstall
               , installYamllint

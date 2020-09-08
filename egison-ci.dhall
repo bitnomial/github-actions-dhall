@@ -14,8 +14,8 @@ let egiInstall =
         }
 
 let checkEgi =
-        λ(egis : List Text)
-      → haskellCi.BuildStep.Name
+      λ(egis : List Text) →
+        haskellCi.BuildStep.Name
           { name = "Check Egison files"
           , run =
                   ''
@@ -23,8 +23,8 @@ let checkEgi =
                   ''
               ++  concatMap
                     Text
-                    (   λ(d : Text)
-                      → ''
+                    ( λ(d : Text) →
+                        ''
                         egison --test ${d}
                         ''
                     )
@@ -32,8 +32,8 @@ let checkEgi =
           }
 
 let egiSteps =
-        λ(steps : List haskellCi.BuildStep)
-      →     haskellCi.ciNoMatrix
+      λ(steps : List haskellCi.BuildStep) →
+            haskellCi.ciNoMatrix
               (   [ haskellCi.checkout
                   , haskellCi.haskellEnv haskellCi.latestEnv
                   , haskellCi.cache
